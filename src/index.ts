@@ -1,20 +1,19 @@
 /**
- * Public entry point of @trysac/virtual-tree-view.
+ * @trysac/virtual-tree-view
  *
- * Replace this placeholder with the utility's real API. Keep every export documented and covered by tests.
+ * Enterprise-grade virtualized tree view for 100,000+ nodes with complete
+ * WAI-ARIA APG keyboard navigation, aria-activedescendant focus, and recycled DOM rows.
  */
 
-/**
- * Builds a greeting for `name`.
- *
- * @param name - Who to greet. Surrounding whitespace is ignored.
- * @returns The greeting, for example `"Hello, Ada!"`.
- * @throws {TypeError} When `name` is empty after trimming.
- */
-export function greet(name: string): string {
-  const trimmed = name.trim();
-  if (trimmed === "") {
-    throw new TypeError("name must not be empty");
-  }
-  return `Hello, ${trimmed}!`;
-}
+export { TreeController } from "./controller.js";
+export { TreeError, type TreeErrorCode } from "./errors.js";
+export { renderTree } from "./renderer.js";
+export type {
+  RenderTreeOptions,
+  RenderTreeStats,
+  Row,
+  TreeControllerOptions,
+  TreeNode,
+  TreeRenderer,
+  VirtualWindow,
+} from "./types.js";
