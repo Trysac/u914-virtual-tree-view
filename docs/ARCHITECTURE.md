@@ -1,30 +1,22 @@
 # Architecture
 
-## Overview
+`@trysac/virtual-tree-view` decouples the hierarchical tree data structure from virtual window math and DOM rendering.
 
-`@trysac/virtual-tree-view` is a small, dependency-free TypeScript library published to npm as ES modules with type
-declarations. Virtualized tree view for 100,000 nodes with the full WAI-ARIA tree keyboard pattern, aria-activedescendant focus and recycled DOM rows
+## Data Model & Indexing
 
-## Modules
+- Input tree nodes are walked iteratively with an explicit stack to prevent stack overflow on deep trees.
+- Node depths, sibling sets (`setSize`, `posInSet`), parent relationships, and pre-order ordinals are cached in flat internal arrays.
+- The active visible list is represented as an array of ordinals. Expanding or collapsing a node performs array splicing of pre-order subtree indices.
 
-| Module | Responsibility |
-|---|---|
-| `src/index.ts` | Public API. Everything consumers import is exported from here. |
+## Virtualization & Window Math
 
-Add a row when you add a module. Internal modules are not re-exported unless they are part of the public API.
+- Total scrollable height is `visibleCount * rowHeight`.
+- Visible index slice is computed from clamped `scrollTop` with overscan margins.
+- Row recycling: The DOM renderer keeps a pool of `ceil(viewportHeight / rowHeight) + 2 * overscan` elements positioned using CSS `transform: translateY(...)`.
+- Sub-millisecond scroll updates ensure deterministic work bounds and steady 60 fps rendering.
 
-## Boundaries
+## Accessibility (WAI-ARIA APG)
 
-- No runtime dependencies by default; any addition is justified in [STACK.md](STACK.md).
-- No I/O at import time. Functions are pure unless their documentation says otherwise.
-- Errors are thrown as built-in error types (`TypeError`, `RangeError`) with actionable messages.
-
-## Build and distribution
-
-`npm run build` compiles `src/` to `dist/` with `tsconfig.build.json`. Only `dist/` is published
-(`files` in `package.json`).
-
-## Decisions
-
-Architectural decisions are recorded in [decisions/](decisions/), starting with
-[0001](decisions/0001-record-architecture-decisions.md).
+- Container has `role="tree"` with `tabindex="0"`.
+- Container tracks current focus with `aria-activedescendant` pointing to the row's DOM element ID.
+- Rendered rows receive `role="treeitem"`, `aria-level`, `aria-setsize`, `aria-posinset`, and `aria-expanded` (for nodes with children).

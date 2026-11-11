@@ -9,4 +9,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Implement virtualized tree view controller and DOM renderer with WAI-ARIA APG tree pattern and recycled row pool for 100,000 nodes.
 - Initial project structure from the factory utility template.
