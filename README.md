@@ -8,9 +8,15 @@ File explorers and outline panes with tens of thousands of nodes freeze when eve
 
 ## Installation
 
-```bash
-npm install @trysac/virtual-tree-view
+Not published to npm yet. Build it from a clone, then install it from the local path:
+
+```sh
+git clone https://github.com/Trysac/u914-virtual-tree-view.git
+cd u914-virtual-tree-view && npm ci && npm run build
+cd ../your-project && npm install ../u914-virtual-tree-view
 ```
+
+Imports keep the package name: `import { ... } from "@trysac/virtual-tree-view"`.
 
 ## Usage
 
